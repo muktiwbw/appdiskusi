@@ -1,59 +1,398 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
+# About
+AppDiskusi adalah suatu aplikasi diskusi sederhana sebagai pembelajaran CRUD dasar dan REST API pada framework Laravel.
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+# Endpoint
 
-## About Laravel
+## Register
+Digunakan untuk mendaftarkan user baru.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as:
+### Endpoint
+```
+POST https://appdiskusi-react.herokuapp.com/api/register
+```
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Request Body
+```
+{
+    "username":"prefered_username",
+    "email":"prefered_email",
+    "password":"prefered_password",
+    "first_name":"prefered_first_name",
+    "last_name":"prefered_last_name"
+}
+```
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications.
+### Response
+```
+{
+    "id":"created_user_id",
+    "username":"prefered_username",
+    "email":"prefered_email",
+    "first_name":"prefered_first_name",
+    "last_name":"prefered_last_name",
+    "created_at":"user_creation_date"
+}
+```
+---
+## Login
+Digunakan untuk autentikasi user.
 
-## Learning Laravel
+### Endpoint
+```
+POST https://appdiskusi-react.herokuapp.com/api/login
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of any modern web application framework, making it a breeze to get started learning the framework.
+### Request Body
+```
+{
+    "username":"user_username",
+    "password":"user_password"
+}
+```
 
-If you're not in the mood to read, [Laracasts](https://laracasts.com) contains over 1100 video tutorials on a range of topics including Laravel, modern PHP, unit testing, JavaScript, and more. Boost the skill level of yourself and your entire team by digging into our comprehensive video library.
+### Response
+```
+{
+    "id":"created_user_id",
+    "api_token":"user_api_token"
+}
+```
+---
+## User Info
+Digunakan untuk mendapatkan info user.
 
-## Laravel Sponsors
+### Endpoint
+```
+GET https://appdiskusi-react.herokuapp.com/api/info/{api_token}/{user_id}
+```
 
-We would like to extend our thanks to the following sponsors for helping fund on-going Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell):
+### Response
+```
+{
+    "id":"user_id",
+    "username":"user_username",
+    "email":"user_email",
+    "name":"user_name",
+    "created_at":"user_creation_date",
+}
+```
+---
+## User's Questions
+Digunakan untuk mendapatkan pertanyaan-pertanyaan yang dibuat oleh user.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Pulse Storm](http://www.pulsestorm.net/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
+### Endpoint
+```
+GET https://appdiskusi-react.herokuapp.com/api/questions/{api_token}/{user_id}
+```
 
-## Contributing
+### Response
+```
+[
+    {
+        "id":"question_id",
+        "title":"question_title",
+        "text":"question_text",
+        "user_id":"question_user_id",
+        "created_at":"user_creation_date"
+    }
+]
+```
+---
+## Create Question
+Digunakan untuk membuat pertanyaan baru.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Endpoint
+```
+POST https://appdiskusi-react.herokuapp.com/api/question/store
+```
+### Request Body
+```
+{
+    "api_token":"user_api_token",
+    "title":"question_title",
+    "text":"question_text"
+}
+```
 
-## Security Vulnerabilities
+### Response
+```
+{
+    "message":"Pertanyaan berhasil dibuat",
+    "data":{
+        "id":"question_id",
+        "title":"question_title",
+        "text":"question_text",
+        "user_id":"question_user_id",
+        "created_at":"user_creation_date"
+    }
+}
+```
+---
+## Read Single Question
+Digunakan untuk menampilkan detail pertanyaan disertai dengan jawaban-jawaban pada pertanyaan tersebut.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Endpoint
+```
+GET https://appdiskusi-react.herokuapp.com/api/question/show/{api_token}/{question_id}
+```
 
-## License
+### Response
+```
+{
+    "id":"question_id",
+    "title":"question_title",
+    "text":"question_text",
+    "user":{
+        "id":"author_id",
+        "email":"author_email",
+        "username":"author_username"
+    },
+    "answers":[
+        {
+            "id":"answer_id",
+            "text":"answer_text",
+            "user_id":"author_id",
+            "question_id":"answer_question_id",
+            "created_at":"answer_creation_date",
+            "updated_at":"answer_manipulation_date"
+        }
+    ],
+    "created_at":"question_creation_date",
+    "updated_at":"question_manipulation_date"
+}
+```
+---
+## Read All Question
+Digunakan untuk menampilkan semua pertanyaan yang tersimpan pada database.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Endpoint
+```
+GET https://appdiskusi-react.herokuapp.com/api/question/index/{api_token}
+```
+
+
+### Response
+```
+[
+    {
+        "id":"question_id",
+        "title":"question_title",
+        "text":"question_text",
+        "user":"author_id",
+        "created_at":"question_creation_date",
+        "updated_at":"question_manipulation_date"
+    }
+]
+```
+---
+## Update Question
+Digunakan untuk mengedit pertanyaan.
+
+### Endpoint
+```
+POST https://appdiskusi-react.herokuapp.com/api/question/update
+```
+### Request Body
+```
+{
+    "api_token":"user_api_token",
+    "question_id":"question_id",
+    "title":"new_question_title",
+    "text":"new_question_text"
+}
+```
+
+### Response
+```
+{
+    "message":"Data berhasil diupdate",
+    "data":{
+        "id":"question_id",
+        "title":"question_title",
+        "text":"question_text",
+        "user":"author_id",
+        "created_at":"question_creation_date",
+        "updated_at":"question_manipulation_date"
+    }
+}
+```
+---
+## Delete Question
+Digunakan untuk menghapus pertanyaan.
+
+### Endpoint
+```
+POST https://appdiskusi-react.herokuapp.com/api/question/destroy
+```
+### Request Body
+```
+{
+    "api_token":"user_api_token",
+    "question_id":"question_id"
+}
+```
+
+### Response
+```
+{
+    "message":"Data berhasil dihapus",
+    "data":{
+        "id":"question_id",
+        "title":"question_title",
+        "text":"question_text",
+        "user":"author_id",
+        "created_at":"question_creation_date",
+        "updated_at":"question_manipulation_date"
+    }
+}
+```
+---
+## Create Answer
+Digunakan untuk membuat jawaban.
+
+### Endpoint
+```
+POST https://appdiskusi-react.herokuapp.com/api/answer/store
+```
+### Request Body
+```
+{
+    "api_token":"user_api_token",
+    "question_id":"question_id",
+    "text":"answer_text"
+}
+```
+
+### Response
+```
+{
+    "id":"answer_id",
+    "text":"answer_text",
+    "user_id":"author_id",
+    "question_id":"answer_question_id",
+    "created_at":"answer_creation_date",
+    "updated_at":"answer_manipulation_date"
+}
+```
+---
+## Update Answer
+Digunakan untuk mengedit jawaban.
+
+### Endpoint
+```
+POST https://appdiskusi-react.herokuapp.com/api/answer/update
+```
+### Request Body
+```
+{
+    "api_token":"user_api_token",
+    "answer_id":"answer_id",
+    "text":"new_answer_text"
+}
+```
+
+### Response
+```
+{
+    "message":"Jawaban berhasil diupdate",
+    "data":{
+        "id":"answer_id",
+        "text":"answer_text",
+        "user_id":"author_id",
+        "question_id":"answer_question_id",
+        "created_at":"answer_creation_date",
+        "updated_at":"answer_manipulation_date"
+    }
+}
+```
+---
+## Delete Answer
+Digunakan untuk menghapus jawaban.
+
+### Endpoint
+```
+POST https://appdiskusi-react.herokuapp.com/api/answer/destroy
+```
+### Request Body
+```
+{
+    "api_token":"user_api_token",
+    "answer_id":"answer_id"
+}
+```
+
+### Response
+```
+{
+    "message":"Jawaban berhasil dihapus",
+    "data":{
+        "id":"answer_id",
+        "text":"answer_text",
+        "user_id":"author_id",
+        "question_id":"answer_question_id",
+        "created_at":"answer_creation_date",
+        "updated_at":"answer_manipulation_date"
+    }
+}
+```
+---
+## Vote
+Digunakan untuk menambahkan vote pada pertanyaan.
+
+### Endpoint
+```
+POST https://appdiskusi-react.herokuapp.com/api/vote
+```
+### Request Body
+```
+{
+    "api_token":"user_api_token",
+    "question_id":"question_id",
+    "type":"up/down"
+}
+```
+
+### Response
+```
+{
+    "message":"Vote berhasil ditambahkan",
+    "data":{
+        "id":"answer_id",
+        "type":"vote_type",
+        "user_id":"author_id",
+        "question_id":"answer_question_id",
+        "created_at":"answer_creation_date",
+        "updated_at":"answer_manipulation_date"
+    }
+}
+```
+---
+## Unvote
+Digunakan untuk menghapus vote pada pertanyaan.
+
+### Endpoint
+```
+POST https://appdiskusi-react.herokuapp.com/api/unvote
+```
+### Request Body
+```
+{
+    "api_token":"user_api_token",
+    "question_id":"question_id"
+}
+```
+
+### Response
+```
+{
+    "message":"Vote berhasil dihapus",
+    "data":{
+        "id":"answer_id",
+        "type":"vote_type",
+        "user_id":"author_id",
+        "question_id":"answer_question_id",
+        "created_at":"answer_creation_date",
+        "updated_at":"answer_manipulation_date"
+    }
+}
+```
