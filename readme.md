@@ -1,5 +1,6 @@
 # About
 AppDiskusi adalah suatu aplikasi diskusi sederhana sebagai pembelajaran CRUD dasar dan REST API pada framework Laravel.
+App dapat dicoba disini: [https://appdiskusi.herokuapp.com/](https://appdiskusi.herokuapp.com/)
 
 # Endpoint
 
